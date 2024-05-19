@@ -34,7 +34,7 @@ This project is a RESTful API for managing books in a library system, built usin
 - Python 3.10+
 - FastAPI
 - SQLAlchemy
-- PostgreSQL (or another SQL database)
+- SQLite
 - Docker (for deployment)
 
 ## Setup Instructions
@@ -43,7 +43,7 @@ This project is a RESTful API for managing books in a library system, built usin
 
 Ensure you have the following installed:
 - Python 3.10+
-- PostgreSQL (or another SQL database)
+- SQLite (or another SQL database)
 - Docker (optional, for deployment)
 
 ### Installation
