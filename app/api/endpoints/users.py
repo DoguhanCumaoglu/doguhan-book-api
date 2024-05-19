@@ -75,6 +75,5 @@ async def logout(
     request: Request,
     current_user: schemas.User = Depends(dependencies.get_current_user),
 ):
-    # Remove the token from the session
     Token_Session.pop(current_user.username, None)
     return {"message": "Successfully logged out"}
