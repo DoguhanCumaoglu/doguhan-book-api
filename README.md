@@ -140,9 +140,9 @@ This project uses GitHub Actions for continuous integration and continuous deplo
 
     - `HEROKU_API_KEY`: Your Heroku API key.
     - `HEROKU_APP_NAME`: Your Heroku application name.
-  Server link: (https://doguhan-book-api-43d5f4db9843.herokuapp.com/docs#/)
+ 
 
     To add secrets, go to your GitHub repository, click on `Settings`, then `Secrets`, and then `New repository secret`.
+    Server link: (https://doguhan-book-api-43d5f4db9843.herokuapp.com/docs#/)
 
-```bash
-pytest
+
