@@ -20,10 +20,10 @@ jobs:
     - name: Build and push Docker image
       run: |
         docker build --platform linux/amd64 -t band-app-image .
-        docker tag band-app-image registry.heroku.com/groove-gather/web
-        docker push registry.heroku.com/groove-gather/web
+        docker tag band-app-image registry.heroku.com/doguhan-book-api/web
+        docker push registry.heroku.com/doguhan-book-api/web
 
     - name: Release image
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: heroku container:release web -a groove-gather
+      run: heroku container:release web -a doguhan-book-api 
