@@ -143,9 +143,5 @@ This project uses GitHub Actions for continuous integration and continuous deplo
 
     To add secrets, go to your GitHub repository, click on `Settings`, then `Secrets`, and then `New repository secret`.
 
-### Testing
-
-To run the tests, use:
-
 ```bash
 pytest
