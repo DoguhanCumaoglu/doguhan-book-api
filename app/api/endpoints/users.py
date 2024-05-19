@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status,Request
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 from app.db import schemas, crud
@@ -8,24 +8,32 @@ from app.core.config import settings
 from typing import Annotated
 from app.api import dependencies
 from datetime import timedelta
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 
 router = APIRouter()
+limiter=Limiter(key_func=get_remote_address)
 @router.post("/register")
-async def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
+@limiter.limit("5/minute")
+async def register(request:Request,user: schemas.UserCreate, db: Session = Depends(get_db)):
     if crud.validate_username(username=user.username):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="The length of the username must be between 4 and 11 characters")
+        print("c")
+        raise HTTPException(status_code=401, detail="The length of the username must be between 4 and 11 characters")
     
     if (crud.validate_password(password=user.password)):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password must be at least 4 characters long")
+        print("b")
+        raise HTTPException(status_code=402, detail="Password must be at least 4 characters long")
     
     db_user = crud.get_user_by_username(db, username=user.username)
     if db_user:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already registered")
+        print("e")
+        raise HTTPException(status_code=403, detail="Username already registered")
     crud.create_user(db=db, user=user)
     return {"message": "Successfully registered"}
 
 @router.post("/login")
-async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],db: Session = Depends(get_db),
+@limiter.limit("5/minute")
+async def login_for_access_token(request:Request,form_data: Annotated[OAuth2PasswordRequestForm, Depends()],db: Session = Depends(get_db),
                                  )-> schemas.Token:
     user = crud.get_user_by_username(db, username=form_data.username)
     if user is None:
@@ -49,11 +57,6 @@ def logout():
     # Implement token invalidation if using a token blacklist or similar mechanism
     return {"message": "Successfully logged out"}
 
-async def get_current_active_user(
-    current_user: Annotated[schemas.User, Depends(dependencies.get_current_user)],
-):
-    if current_user.disabled:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
+
 
 
