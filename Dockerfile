@@ -1,25 +1,17 @@
-# Use an official Python runtime as a parent image
-FROM python:3.11-slim
+FROM python:3.10.5-slim
 
-# Set the working directory in the container
-WORKDIR /usr/src/app
+RUN apt-get update && apt-get install --no-install-recommends -y git gcc libldap2-dev libsasl2-dev libssl-dev build-essential automake autoconf && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y \
-    gcc \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
-# Copy just the requirements.txt first to leverage Docker cache
-COPY ./requirements.txt ./
+RUN apt-get install --no-install-recommends -y tzdata
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+WORKDIR /app
 
-# Force reinstall uvicorn to ensure it's in the PATH
-RUN pip install --ignore-installed uvicorn[standard]==0.23.2
+COPY requirements.txt /app/requirements.txt
 
+RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
-COPY . .
+COPY . /app/
 
-EXPOSE 8080
+EXPOSE 8000
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

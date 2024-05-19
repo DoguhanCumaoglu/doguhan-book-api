@@ -27,7 +27,6 @@ async def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
 @router.post("/login")
 async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],db: Session = Depends(get_db),
                                  )-> schemas.Token:
-    print ("burdayyım")
     user = await crud.get_user_by_username(db, username=form_data.username)
     if user is None:
         raise HTTPException(
@@ -53,7 +52,6 @@ def logout():
 async def get_current_active_user(
     current_user: Annotated[schemas.User, Depends(dependencies.get_current_user)],
 ):
-    print ("Current user")
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user

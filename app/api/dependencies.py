@@ -10,7 +10,6 @@ from sqlalchemy.orm import Session
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/login")
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
-    print ("ehgee")
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
