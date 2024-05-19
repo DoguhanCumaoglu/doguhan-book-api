@@ -26,4 +26,6 @@ jobs:
     - name: Release image
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
       run: heroku container:release web -a doguhan-book-api 
