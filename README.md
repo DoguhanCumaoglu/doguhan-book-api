@@ -134,60 +134,6 @@ This project uses GitHub Actions for continuous integration and continuous deplo
 
     Create a file `.github/workflows/main.yml` with the following content:
 
-    ```yaml
-    name: CI/CD Pipeline
-
-    on:
-      push:
-        branches:
-          - main
-      pull_request:
-        branches:
-          - main
-
-    jobs:
-      build:
-        runs-on: ubuntu-latest
-
-        steps:
-        - uses: actions/checkout@v2
-
-        - name: Set up Python
-          uses: actions/setup-python@v2
-          with:
-            python-version: '3.10'
-
-        - name: Install dependencies
-          run: |
-            python -m pip install --upgrade pip
-            pip install -r requirements.txt
-
-        - name: Lint with flake8
-          run: |
-            pip install flake8
-            flake8 .
-
-        - name: Run Tests
-          run: |
-            pip install pytest
-            pytest
-
-      deploy:
-        runs-on: ubuntu-latest
-        needs: build
-
-        steps:
-        - uses: actions/checkout@v2
-
-        - name: Deploy to Heroku
-          env:
-            HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-            HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
-          run: |
-            git remote add heroku https://git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
-            git push heroku main
-    ```
-
 2. **GitHub Secrets**
 
     To securely manage sensitive information, use GitHub Secrets:
