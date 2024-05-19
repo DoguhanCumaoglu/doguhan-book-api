@@ -6,6 +6,7 @@ from app.db.database import get_db
 from app.core.config import settings
 from app.db import schemas, crud
 from sqlalchemy.orm import Session
+from app.session import Token_Session
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/login")
@@ -28,6 +29,8 @@ def get_current_user(
             raise credentials_exception
         token_data = schemas.TokenData(username=username)
     except JWTError:
+        raise credentials_exception
+    if Token_Session[username] != token:
         raise credentials_exception
     user = crud.get_user_by_username(db, username=token_data.username)
     if user is None:

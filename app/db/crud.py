@@ -1,4 +1,3 @@
-from uuid import uuid1
 from sqlalchemy.orm import Session
 from app.db import models, schemas
 from app.core.security import get_password_hash
