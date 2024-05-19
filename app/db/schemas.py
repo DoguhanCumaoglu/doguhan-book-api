@@ -5,7 +5,6 @@ from typing import Union
 class BookBase(BaseModel):
     title: str
     author: str
-    isbn: str
     publication_year: int
 
 class BookCreate(BookBase):

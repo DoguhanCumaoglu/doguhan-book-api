@@ -18,7 +18,7 @@ async def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     if (crud.validate_password(password=user.password)):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password must be at least 4 characters long")
     
-    db_user = await crud.get_user_by_username(db, username=user.username)
+    db_user = crud.get_user_by_username(db, username=user.username)
     if db_user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already registered")
     crud.create_user(db=db, user=user)
@@ -27,7 +27,7 @@ async def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
 @router.post("/login")
 async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],db: Session = Depends(get_db),
                                  )-> schemas.Token:
-    user = await crud.get_user_by_username(db, username=form_data.username)
+    user = crud.get_user_by_username(db, username=form_data.username)
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

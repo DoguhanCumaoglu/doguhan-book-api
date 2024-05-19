@@ -1,9 +1,12 @@
+from uuid import uuid1
 from sqlalchemy.orm import Session
 from app.db import models, schemas
 from app.core.security import get_password_hash
+import random
 
 def create_book(db: Session, book: schemas.BookCreate):
     db_book = models.Book(**book.dict())
+    db_book.isbn =generate_isbn()
     db.add(db_book)
     db.commit()
     db.refresh(db_book)
@@ -48,7 +51,7 @@ def validate_password(password: str):
     if (len(password)<4):
         return True
     return False
-async def get_user_by_username(db: Session, username: str):
+def get_user_by_username(db: Session, username: str):
     return db.query(models.User).filter(models.User.username == username).first()
 
 def create_favorite(db: Session, user_id: int, book_id: int):
@@ -66,3 +69,6 @@ def delete_favorite(db: Session, user_id: int, book_id: int):
         db.delete(db_favorite)
         db.commit()
     return db_favorite
+
+def generate_isbn():
+    return random.randint(1000000000000, 9999999999999)  # Generate a 13-digit random number
