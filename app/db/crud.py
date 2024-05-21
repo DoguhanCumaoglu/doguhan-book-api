@@ -88,6 +88,4 @@ def delete_favorite(db: Session, user_id: int, book_id: int):
 
 
 def generate_isbn():
-    return random.randint(
-        1000000000000, 9999999999999
-    )
+    return random.randint(1000000000000, 9999999999999)
