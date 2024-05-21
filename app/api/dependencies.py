@@ -31,7 +31,11 @@ def get_current_user(
     except JWTError:
         raise credentials_exception
     if Token_Session[username] != token:
-        raise credentials_exception
+        credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
     user = crud.get_user_by_username(db, username=token_data.username)
     if user is None:
         raise credentials_exception
