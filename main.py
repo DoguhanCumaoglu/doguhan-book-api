@@ -1,5 +1,3 @@
-from http.client import HTTPException
-from fastapi import FastAPI, status
 from app.db import models
 from app.db.database import engine
 from app.api.endpoints import books, users, favorites
