@@ -71,17 +71,7 @@ Ensure you have the following installed:
     ```bash
     pip install -r requirements.txt
     ```
-
-4. **Set Up the Database**
-
-    ```bash
-    # Start PostgreSQL server and create a database
-    # Replace dbname with your database name
-
-    # Run database migrations
-    python -m app.db.database
-    ```
-
+    
 5. **Run the Application**
 
     ```bash
