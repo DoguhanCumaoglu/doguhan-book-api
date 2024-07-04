@@ -1,20 +1,31 @@
-name: Check Secret
+name: Deploy to Heroku
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main 
 
 jobs:
-  check-secret:
+  deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
 
-      - name: Check DATABASE_URL
-        run: |
-          if [[ "$DATABASE_URL" == *"localhost"* ]]; then
-            echo "DATABASE_URL contains localhost"
-          else
-            echo "DATABASE_URL does not contain localhost"
-          fi
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Login to Heroku Container registry
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
+
+    - name: Build and push Docker image
+      run: |
+        docker build --platform linux/amd64 -t band-app-image .
+        docker tag band-app-image registry.heroku.com/doguhan-book-api/web
+        docker push registry.heroku.com/doguhan-book-api/web
+
+    - name: Release image
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      run: heroku container:release web -a doguhan-book-api 
