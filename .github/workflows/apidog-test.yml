@@ -21,4 +21,4 @@ jobs:
 
     - name: Running Test Scenario
       run: |
-        apidog run https://api.apidog.com/api/v1/projects/589728/api-test/ci-config/356776/detail?token=xon-G-X_WZtZcKF9Oa3Mxh -r html,cli,newman-reporter-htmlextra
+        apidog run https://api.apidog.com/api/v1/projects/589728/api-test/ci-config/356776/detail?token=xon-G-X_WZtZcKF9Oa3Mxh -r html,cli,newman-reporter-htmlextra-export testArtifacts/htmlreport.html
