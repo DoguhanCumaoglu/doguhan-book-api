@@ -9,7 +9,12 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Print Secret Value
-        run: echo "DATABASE_URL=$(echo $DATABASE_URL | base64)"
+      - name: Check DATABASE_URL
+        run: |
+          if [[ "$DATABASE_URL" == *"localhost"* ]]; then
+            echo "DATABASE_URL contains localhost"
+          else
+            echo "DATABASE_URL does not contain localhost"
+          fi
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
