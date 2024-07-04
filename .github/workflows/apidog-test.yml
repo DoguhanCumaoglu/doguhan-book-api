@@ -14,11 +14,22 @@ jobs:
       with:
         node-version: '14'
 
-    - name: Install Apidog CLI and newman-reporter-htmlextra
-      run: |
-        npm install -g apidog-cli
-        npm install -g newman-reporter-htmlextra
+    - name: Install Apidog CLI
+      run: npm install -g apidog-cli
 
     - name: Running Test Scenario
+      run: apidog run https://api.apidog.com/api/v1/projects/589728/api-test/ci-config/356776/detail?token=xon-G-X_WZtZcKF9Oa3Mxh -r html,cli
+
+    - name: Install Newman and htmlextra reporter
       run: |
-        apidog run https://api.apidog.com/api/v1/projects/589728/api-test/ci-config/356776/detail?token=xon-G-X_WZtZcKF9Oa3Mxh -r html,cli,newman-reporter-htmlextra-export testArtifacts/htmlreport.html
+        npm install -g newman
+        npm install -g newman-reporter-htmlextra
+
+    - name: Run Newman Tests
+      run: newman run https://api.apidog.com/api/v1/projects/589728/api-test/ci-config/356776/detail?token=xon-G-X_WZtZcKF9Oa3Mxh -r htmlextra --reporter-htmlextra-export newman-report.html
+
+    - name: Upload Report
+      uses: actions/upload-artifact@v2
+      with:
+        name: newman-report
+        path: newman-report.html
