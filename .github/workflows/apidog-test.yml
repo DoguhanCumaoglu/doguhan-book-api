@@ -19,9 +19,3 @@ jobs:
 
     - name: Running Test Scenario
       run: apidog run https://api.apidog.com/api/v1/projects/589728/api-test/ci-config/356776/detail?token=xon-G-X_WZtZcKF9Oa3Mxh -r html,cli
-
-    - name: Upload HTML Report
-      uses: actions/upload-artifact@v2
-      with:
-        name: api-test-report
-        path: /Users/doguhan/Desktop/report.html  # Update this path to where the report is saved
